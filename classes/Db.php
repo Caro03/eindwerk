@@ -4,7 +4,7 @@ class Db {
             
     private static $conn;
 
-    public static function connect() {
+    public static function getConnection() {
         include_once(__DIR__ . "/../settings/settings.php");
     
         if(self::$conn === null) {

@@ -1,76 +1,53 @@
 <?php
-include_once(__DIR__ . "/classes/Db.php");
 include_once(__DIR__ . "/classes/User.php");
-session_start();
-session_destroy();
 
-// if register form is submitted and not empty
-if (!empty($_POST['register'])) {
-    if (count(array_filter($_POST)) == count($_POST)) {
-        // check if email is filled out
-        if (!empty($_POST['email'])) {
-            // check for thomas more email
-            $verifyEmail = new User();
-            $email = $_POST['email'];
-            $verifyEmail->setEmail($email);
-            $resultEmail = $verifyEmail->validateEmail($email);
+if(!empty($_POST)) {
 
-            // if thomas more email = ok
-            if ($resultEmail == 1) {
-                // check if email is not taken
-                $emailAvailable = new User();
-                $emailAvailable->setEmail($email);
-                $available = $emailAvailable->emailAvailable($email);
-                if ($available == 1) {
-                    // check if password and verifypassword are the same
-                    if (!empty($_POST['password']) && $_POST['password'] === $_POST['verifyPassword']) {
-                        //check if password length is ok
-                        $verifyPassword = new User();
-                        $password = $_POST['password'];
-                        $verifyPassword->setPassword($password);
-                        $resultPassword = $verifyPassword->validatePassword($password);
+    try {
+        $user = new User();
+        $user->setEmail(htmlspecialchars($_POST['email']));
+        $user->setFirstname($_POST['firstname']);
+        $user->setLastname($_POST['lastname']);
+        $user->setPassword($_POST['password']);
+        $user->setRole($_POST['role']);
 
-                        if ($resultPassword == 1) {
-                            // register the user
-                            $user = new User();
-                            $firstname = $_POST['firstname'];
-                            $lastname = $_POST['lastname'];
-                            $role = $_POST['role'];
-                            $email = $_POST['email'];
-                            $password = $_POST['password'];
-                            $user->setFirstname($firstname);
-                            $user->setLastname($lastname);
-                            $user->setRole($role);
-                            $user->setEmail($email);
-                            $user->setPassword($password);
-                            $register = $user->register($email, $password, $firstname, $lastname, $role);
-
-                            session_start();
-                            $userID = $user->fetchUserID($email);
-                            $_SESSION['user'] = $userID;
-                            header("Location: index.php");
-                        } else {
-                            $error = "Password too short.";
-                            $alert = 5;
-                        }
-                    } else {
-                        $error = "Password doesn't match.";
-                        $alert = 4;
-                    }
-                } else {
-                    $error = "Email taken.";
-                    $alert = 3;
-                }
-            } else {
-                $error = "Only Thomas More emails please.";
-                $alert = 2;
-            }
+        if($_POST['password'] != $_POST['verifyPassword']) {
+            $error = "Wachtwoord klopt niet!";
         }
-    } else {
-        $error = "Fill all fields out please.";
-        $alert = 1;
+
+        if ($user->endsWith("@student.thomasmore.be")) {
+        } else {
+            $error = "Gebruik email van Thomasmore!";
+        }
+
+        if ( $user->availableEmail($user->getEmail()) ) {
+            // Email ready to use
+            if ( $user->validEmail()){
+                // valid email
+            } else {
+                $error = "Ongeldig email!";
+            }
+        } 
+        else {
+            $error = "Email is al in gebruik!";
+        }
+
+
+    } catch (\Throwable $th) {
+        $error = $th->getMessage();
     }
+
+
+    if(!isset($error)) {
+        // methode
+        $user->save();
+
+        //$succes = "user saved";
+        header('Location: login.php');
+    }
+
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -79,6 +56,8 @@ if (!empty($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="build/tailwind.css">
     <title>Register</title>
 </head>
 
@@ -129,6 +108,7 @@ if (!empty($_POST['register'])) {
                 <div class="form_button">
                     <input class="block h-12 mb-2 ml-auto mr-auto text-white shadow-md w-52 sm:w-64 form_btn md:w-72 rounded-2xl" type="submit" value="Registreren" name="register" id="register">
                 </div>
+
             </form>
             <div class="text-sm text-center">
                 <a class="form_register" href="login.php">Al een account? Log je hier in</a>
