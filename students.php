@@ -1,28 +1,14 @@
 <?php
-include_once(__DIR__ . "/classes/User.php");
 include_once(__DIR__ . "/classes/Course.php");
 include_once(__DIR__ . "/classes/Team.php");
 
-session_start();
-$email = $_SESSION["user"];
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-}
-
-$user = new User();
-//$user->setId($_SESSION["id"]);
-$PData = $user->allUserData();
-
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $course = new Course();
-    $courseData = $course->fetchCoursesById2();
-}
-
 if (isset($_GET['id'])) {
     $courseID = $_GET['id'];
-    $fetchTeamsByCourse = new Team();
-    $students = $fetchTeamsByCourse->fetchTeamByStudent();
+    $fetchTeamById = new Team();
+
+    $fetchMembersByTeamId = new Team();
+    $fetchMembersByTeamId->setCourseID($courseID);
+    $members = $fetchMembersByTeamId->fetchStudentsByCourse($courseID);
 }
 
 ?>
@@ -34,20 +20,18 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PEERHOOD | Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="build/tailwind.css">
+    <title>PEERHOOD</title>
 </head>
 
 <body>
-    <h1><?php echo $courseData['coursename'] ?></h1>
 
-    <?php foreach ($students as $student): ?>
-    <p><?php echo $student; ?></p>
-    <?php endforeach; ?>
-
-    <?php foreach ($students as $student) : ?>
-        <p><?php echo $student ; ?></p>
-    <?php endforeach; ?>
-
+    <div class="mb-5">
+        <?php foreach ($members as $member) : ?>
+            <li class="py-2 text-center list-none form_field"><?php echo $member['firstname'] . " " . $member['lastname'] ?></li>
+        <?php endforeach; ?>
+    </div>
 </body>
 
 </html>

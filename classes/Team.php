@@ -145,11 +145,11 @@ class Team
         return $result;
     }
 
-    public function addStudents($studentID, $teamID)
+    public function addStudents($teamID)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO members (student_id, team_id) VALUES(:studentID, :teamID)");
-        $statement->bindParam(":studentID", $studentID);
+        $statement = $conn->prepare("INSERT INTO members (student_id, team_id) VALUES({$_SESSION['id']}, :teamID)");
+        //$statement->bindParam(":studentID", $studentID);
         $statement->bindParam(":teamID", $teamID);
         $result = $statement->execute();
         return $result;
@@ -174,21 +174,21 @@ class Team
         return $result;
     }
 
-    public function fetchCourseForUser($studentID)
+    public function fetchCourseForUser()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * FROM users AS user INNER JOIN members AS member ON user.id = member.student_id INNER JOIN teams AS team ON team.id = member.team_id INNER JOIN courses AS course ON course.id = team.course_id WHERE user.id = :userID");
-        $statement->bindParam(":userID", $studentID);
+        $statement = $conn->prepare("SELECT * FROM users AS user INNER JOIN members AS member ON user.id = member.student_id INNER JOIN teams AS team ON team.id = member.team_id INNER JOIN courses AS course ON course.id = team.course_id WHERE user.id = {$_SESSION['id']}");
+        //$statement->bindParam(":userID", $studentID);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
-    public function fetchTeamByCourseForUser($studentID, $courseID)
+    public function fetchTeamByCourseForUser($courseID)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * FROM users AS user INNER JOIN members AS member ON user.id = member.student_id INNER JOIN teams AS team ON team.id = member.team_id INNER JOIN courses AS course ON course.id = team.course_id WHERE user.id = :userID AND team.course_id = :courseID");
-        $statement->bindParam(":userID", $studentID);
+        $statement = $conn->prepare("SELECT * FROM users AS user INNER JOIN members AS member ON user.id = member.student_id INNER JOIN teams AS team ON team.id = member.team_id INNER JOIN courses AS course ON course.id = team.course_id WHERE user.id = {$_SESSION['id']} AND team.course_id = :courseID");
+        //$statement->bindParam(":userID", $studentID);
         $statement->bindParam(":courseID", $courseID);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);

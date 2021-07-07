@@ -48,9 +48,21 @@ if (!empty($_POST)) {
             $courseID = $idArray['id'];
             $course->setCourseID($courseID);
             //$courses = $course->fetchCoursesById();
-            $error = "yeey";
+            $error = "Je bent succesvol toegevoegd aan deze cursus";
             $course->saveStudent();
 
+            $team = new Team();
+            $r = $team->fetchAvailableGroups($courseID);
+            shuffle($r);
+            $newR = $r[0];
+            $newRString = implode(" ", $newR);
+            $rnew = (int)$newRString;
+
+            //Add student to groups
+            $newly = new Team();
+            $newly->setTeamID($newR);
+            //$newly->setStudentID($userID);
+            $n = $newly->addStudents($rnew);
         } else {
             $error = "Code is niet correct";
         }
