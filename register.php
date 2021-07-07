@@ -15,7 +15,7 @@ if(!empty($_POST)) {
             $error = "Wachtwoord klopt niet!";
         }
 
-        if ($user->endsWith("@student.thomasmore.be")) {
+        if ($user->endsWith("thomasmore.be")) {
         } else {
             $error = "Gebruik email van Thomasmore!";
         }
@@ -97,13 +97,10 @@ if(!empty($_POST)) {
                     <input class="block mb-8 ml-auto mr-auto bg-transparent border-b border-black w-52 sm:w-64 form_field md:w-72" placeholder="Verify password" type="password" name="verifyPassword" id="verifyPassword">
                 </div>
 
-                <div class="block mb-8 ml-auto mr-auto w-52 sm:w-64 radio-item form_field md:w-72">
-                    <label class="mr-2" for="role">Ik ben een...</label>
-                    <input type="radio" id="student" name="role" value="2">
-                    <label class="mr-2" for="student">Student</label>
-                    <input type="radio" id="docent" name="role" value="1">
-                    <label for="docent">Docent</label>
-                </div>
+                <select name="role" class="form-control" id="choiceselect">
+                <option value="student">Ik ben een student</option>
+                <option  value="docent">Ik ben een docent</option>
+                </select>
 
                 <div class="form_button">
                     <input class="block h-12 mb-2 ml-auto mr-auto text-white shadow-md w-52 sm:w-64 form_btn md:w-72 rounded-2xl" type="submit" value="Registreren" name="register" id="register">

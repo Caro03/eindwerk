@@ -9,11 +9,14 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user = new User();
-//$user->setId($id);
+//$user->setId($_SESSION["id"]);
 $PData = $user->allUserData();
 
-$course = new Course();
-$courseData = $course->fetchCoursesByAdmin();
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $course = new Course();
+    $courseData = $course->fetchCoursesById2();
+}
 
 ?>
 
@@ -28,15 +31,11 @@ $courseData = $course->fetchCoursesByAdmin();
 </head>
 
 <body>
-    <h1>Hey <?php echo $PData['firstname'] ?></h1>
-    <a href="addcourse.php">Cursus toevoegen</a>
+    <h1><?php echo $courseData['coursename'] ?></h1>
+    <h2>Cursuscode: <?php echo $courseData['code'] ?></h2>
 
-    <?php foreach ($courseData as $data) : ?>
-        <a href="course.php?id=<?php echo $data['id'] ?>">
-            <?php echo $data['coursename']; ?>
-        </a>
-        <br>
-    <?php endforeach; ?>
+    <a href="teams.php?id=<?php echo $courseData['id'] ?>">Bekijk teams</a>
+    <a href="students.php?id=<?php echo $courseData['id'] ?>">Bekijk alle studenten</a>
 
 </body>
 

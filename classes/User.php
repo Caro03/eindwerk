@@ -156,15 +156,27 @@ include_once(__DIR__ . "/Db.php");
 
         public function allUserData() {
             $conn = Db::getConnection();
-            $statement = $conn->prepare("select * from users where id = :id");
-            $id = $this->getId();
-            $statement->bindParam(":id", $id);
+            $statement = $conn->prepare("select * from users where id = {$_SESSION["id"]}");
+
+            //$id = $this->getId();
+            //$statement->bindParam(":id", $id);
     
             //return result
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
+
+        public function fetchRole(){
+                $conn = Db::getConnection();
+                $statement = $conn->prepare('SELECT role_id FROM users WHERE id = :id');
+                $id = $this->getId();
+                $statement->bindParam(':id', $id);
+
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return $result;
+            }
 
         /**
          * Get the value of lastname
