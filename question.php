@@ -11,7 +11,7 @@ if (!isset($_SESSION['user'])) {
 $user = new User();
 $PData = $user->allUserData();
 
-if (isset($_GET['teamid'])){
+if (isset($_GET['teamid'])) {
     $courseID = $_GET['teamid'];
     $fetchTeam = new Team();
     //$fetchTeam->setStudentID($userID);
@@ -84,41 +84,44 @@ if (!empty($_POST['submitQuestion'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="build/tailwind.css">
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="public/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
     <title>PEERHOOD | Quiz</title>
 </head>
 
 <body>
 
     <?php if ($PData['role_id'] == 'docent') { ?>
-        <h2 class="mb-5 text-2xl text-center form_title md:text-2xl">Meerkeuzevraag maken</h2>
-        <form action="" method="POST">
+        <div class="block ml-auto mr-auto w-64">
+            <h2 class="font-medium text-2xl my-10">Meerkeuzevraag maken</h2>
+            <form action="" method="POST">
 
-            <?php if (isset($error)) : ?>
-                <div class="mb-5 text-center form_error">
-                    <p>
-                        <?php echo $error; ?>
-                    </p>
+                <?php if (isset($error)) : ?>
+                    <div class="mb-5 text-red-500 font-medium">
+                        <p>
+                            <?php echo $error; ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
+
+                <div>
+                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="vraag" id="vraag" placeholder="Wat is de vraag?">
                 </div>
-            <?php endif; ?>
-
-            <div>
-                <input type="text" name="vraag" id="vraag" placeholder="Wat is de vraag?">
-            </div>
-            <div>
-                <input type="text" name="correctantwoord" id="correctantwoord" placeholder="Correct antwoord">
-            </div>
-            <div>
-                <input type="text" name="foutantwoord1" id="foutantwoord1" placeholder="Fout antwoord 1">
-            </div>
-            <div>
-                <input type="text" name="foutantwoord2" id="foutantwoord2" placeholder="Fout antwoord 2">
-            </div>
-            <div>
-                <input type="submit" name="submitQuestion" value="Post quiz">
-            </div>
-        </form>
+                <div>
+                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="correctantwoord" id="correctantwoord" placeholder="Correct antwoord">
+                </div>
+                <div>
+                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord1" id="foutantwoord1" placeholder="Fout antwoord 1">
+                </div>
+                <div>
+                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord2" id="foutantwoord2" placeholder="Fout antwoord 2">
+                </div>
+                <div>
+                    <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4" type="submit" name="submitQuestion" value="Post quiz">
+                </div>
+            </form>
+        </div>
 
     <?php } ?>
 
@@ -142,5 +145,8 @@ if (!empty($_POST['submitQuestion'])) {
     <?php } ?>
 
 </body>
+<footer>
+    <?php include_once('nav.inc.php'); ?>
+</footer>
 
 </html>

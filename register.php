@@ -1,7 +1,7 @@
 <?php
 include_once(__DIR__ . "/classes/User.php");
 
-if(!empty($_POST)) {
+if (!empty($_POST)) {
 
     try {
         $user = new User();
@@ -11,7 +11,7 @@ if(!empty($_POST)) {
         $user->setPassword($_POST['password']);
         $user->setRole($_POST['role']);
 
-        if($_POST['password'] != $_POST['verifyPassword']) {
+        if ($_POST['password'] != $_POST['verifyPassword']) {
             $error = "Wachtwoord klopt niet!";
         }
 
@@ -20,32 +20,28 @@ if(!empty($_POST)) {
             $error = "Gebruik email van Thomasmore!";
         }
 
-        if ( $user->availableEmail($user->getEmail()) ) {
+        if ($user->availableEmail($user->getEmail())) {
             // Email ready to use
-            if ( $user->validEmail()){
+            if ($user->validEmail()) {
                 // valid email
             } else {
                 $error = "Ongeldig email!";
             }
-        } 
-        else {
+        } else {
             $error = "Email is al in gebruik!";
         }
-
-
     } catch (\Throwable $th) {
         $error = $th->getMessage();
     }
 
 
-    if(!isset($error)) {
+    if (!isset($error)) {
         // methode
         $user->save();
 
         //$succes = "user saved";
         header('Location: login.php');
     }
-
 }
 
 ?>
@@ -56,60 +52,59 @@ if(!empty($_POST)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="build/tailwind.css">
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="public/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
     <title>Register</title>
 </head>
 
-<body class="h-screen gradient">
-    <div class="h-auto pb-10 mx-5 my-10 ml-auto mr-auto bg-white rounded-3xl w-60 sm:w-80 md:w-96">
-        <img class="pt-5 mb-2 ml-auto mr-auto logo" src="./images/logo-slogan.png">
-        <div class="container">
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+<body>
+    <div class="block ml-auto mr-auto w-64">
+        <img class="" src="./images/logo-slogan.png">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-                <h2 class="mb-10 text-xl text-center form_title md:text-2xl">Registreren</h2>
+            <h2 class="font-medium text-2xl my-10">Registreren</h2>
 
-                <?php if (isset($error)) : ?>
-                    <div class="mb-5 text-center form_error">
-                        <p class="form_error">
-                            <?php echo $error; ?>
-                        </p>
-                    </div>
-                <?php endif; ?>
-
-                <div class="form_field">
-                    <input class="block mb-8 ml-auto mr-auto bg-transparent border-b border-black w-52 sm:w-64 form_field md:w-72" placeholder="First name" type="text" name="firstname" id="firstname">
+            <?php if (isset($error)) : ?>
+                <div class="mb-5 text-red-500 font-medium">
+                    <p class="form_error">
+                        <?php echo $error; ?>
+                    </p>
                 </div>
+            <?php endif; ?>
 
-                <div class="form_field">
-                    <input class="block mb-8 ml-auto mr-auto bg-transparent border-b border-black w-52 sm:w-64 form_field md:w-72" placeholder="Last name" type="text" name="lastname" id="lastname">
-                </div>
-
-                <div class="form_field">
-                    <input class="block mb-8 ml-auto mr-auto bg-transparent border-b border-black w-52 sm:w-64 form_field md:w-72" placeholder="Email" type="text" name="email" id="email">
-                </div>
-
-                <div class="form_field">
-                    <input class="block mb-8 ml-auto mr-auto bg-transparent border-b border-black w-52 sm:w-64 form_field md:w-72" placeholder="Password" type="password" name="password" id="password">
-                </div>
-
-                <div class="form_field">
-                    <input class="block mb-8 ml-auto mr-auto bg-transparent border-b border-black w-52 sm:w-64 form_field md:w-72" placeholder="Verify password" type="password" name="verifyPassword" id="verifyPassword">
-                </div>
-
-                <select name="role" class="form-control" id="choiceselect">
-                <option value="student">Ik ben een student</option>
-                <option  value="docent">Ik ben een docent</option>
-                </select>
-
-                <div class="form_button">
-                    <input class="block h-12 mb-2 ml-auto mr-auto text-white shadow-md w-52 sm:w-64 form_btn md:w-72 rounded-2xl" type="submit" value="Registreren" name="register" id="register">
-                </div>
-
-            </form>
-            <div class="text-sm text-center">
-                <a class="form_register" href="login.php">Al een account? Log je hier in</a>
+            <div class="form_field">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="First name" type="text" name="firstname" id="firstname">
             </div>
+
+            <div class="form_field">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Last name" type="text" name="lastname" id="lastname">
+            </div>
+
+            <div class="form_field">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Email" type="text" name="email" id="email">
+            </div>
+
+            <div class="form_field">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Password" type="password" name="password" id="password">
+            </div>
+
+            <div class="form_field">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Verify password" type="password" name="verifyPassword" id="verifyPassword">
+            </div>
+
+            <select name="role" class="outline-none w-56 block px-5 py-5 rounded-xl border-black border-2 mb-10" id="choiceselect">
+                <option value="student">Ik ben een student</option>
+                <option value="docent">Ik ben een docent</option>
+            </select>
+
+            <div class="form_button">
+                <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Registreren" name="register" id="register">
+            </div>
+
+        </form>
+        <div class="-ml-10 text-center mb-10">
+            <a class="text-sm" href="login.php">Al een account? Log je hier in</a>
         </div>
     </div>
 </body>

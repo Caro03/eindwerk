@@ -38,36 +38,38 @@ if ($userData['role_id'] == 'docent') {
     }
 }
 
-if (!empty($_POST)) {
-    $code = htmlspecialchars($_POST['CheckCode']);
+if ($userData['role_id'] == 'student') {
+    if (!empty($_POST)) {
+        $code = htmlspecialchars($_POST['CheckCode']);
 
-    if (!empty($code)) {
-        if ($course->checkCode($code)) {
-            $course->setCode($code);
-            $idArray = $course->idFromSession();
-            $courseID = $idArray['id'];
-            $course->setCourseID($courseID);
-            //$courses = $course->fetchCoursesById();
-            $error = "Je bent succesvol toegevoegd aan deze cursus";
-            $course->saveStudent();
+        if (!empty($code)) {
+            if ($course->checkCode($code)) {
+                $course->setCode($code);
+                $idArray = $course->idFromSession();
+                $courseID = $idArray['id'];
+                $course->setCourseID($courseID);
+                //$courses = $course->fetchCoursesById();
+                $error = "Je bent succesvol toegevoegd aan deze cursus";
+                $course->saveStudent();
 
-            $team = new Team();
-            $r = $team->fetchAvailableGroups($courseID);
-            shuffle($r);
-            $newR = $r[0];
-            $newRString = implode(" ", $newR);
-            $rnew = (int)$newRString;
+                $team = new Team();
+                $r = $team->fetchAvailableGroups($courseID);
+                shuffle($r);
+                $newR = $r[0];
+                $newRString = implode(" ", $newR);
+                $rnew = (int)$newRString;
 
-            //Add student to groups
-            $newly = new Team();
-            $newly->setTeamID($newR);
-            //$newly->setStudentID($userID);
-            $n = $newly->addStudents($rnew);
+                //Add student to groups
+                $newly = new Team();
+                $newly->setTeamID($newR);
+                //$newly->setStudentID($userID);
+                $n = $newly->addStudents($rnew);
+            } else {
+                $error = "Code is niet correct";
+            }
         } else {
-            $error = "Code is niet correct";
+            $error = "Code invullen is verplicht";
         }
-    } else {
-        $error = "Code invullen is verplicht";
     }
 }
 
@@ -79,60 +81,61 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="public/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
     <title>Cursussen</title>
 </head>
 
 <body>
+    <div class="block ml-auto mr-auto w-64">
+        <?php if ($userData['role_id'] == 'docent') { ?>
+            <h2 class="font-medium text-2xl mt-10 mb-5">Nieuwe cursus</h2>
+            <h2 class="font-medium text-2xl mb-10 mb-5">Welk vak geef jij?</h2>
 
-    <?php if ($userData['role_id'] == 'docent') { ?>
-        <div class="px-5 py-5 mb-10 ml-auto mr-auto gradient rounded-b-xl">
-            <h2 class="text-2xl text-center text-white form_title">Welk vak geef jij?</h2>
-        </div>
-        <h2 class="text-2xl text-center mb-14 form_title md:text-2xl">Nieuwe cursus</h2>
+        <?php } else { ?>
+            <h2 class="font-medium text-2xl mt-10 mb-5">Nieuwe cursus</h2>
+            <h2 class="font-medium text-2xl mb-10">Vul de cursuscode in</h2>
 
-    <?php } else { ?>
-        <div class="px-5 py-5 mb-10 ml-auto mr-auto gradient rounded-b-xl">
-            <h2 class="text-2xl text-center text-white form_title">Welk vak volg jij?</h2>
-        </div>
+        <?php } ?>
 
-        <h2 class="text-2xl text-center mb-14 form_title md:text-2xl">Nieuwe cursus</h2>
+        <?php if (isset($error)) : ?>
+            <div class="mb-5 text-red-500 font-medium">
+                <p class="form_error">
+                    <?php echo $error; ?>
+                </p>
+            </div>
+        <?php endif; ?>
 
-    <?php } ?>
+        <?php if ($userData['role_id'] == 'docent') { ?>
 
-    <?php if (isset($error)) : ?>
-        <div class="mb-5 text-center form_error">
-            <p class="form_error">
-                <?php echo $error; ?>
-            </p>
-        </div>
-    <?php endif; ?>
+            <form class="form" action="" method="post">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="coursename" placeholder="Naam van jouw vak">
 
-    <?php if ($userData['role_id'] == 'docent') { ?>
+                <div class="pb-5">
+                    <label for="cars">Welke categorie past bij jouw vak?</label>
+                </div>
+                <select name="category" class="outline-none w-56 block px-5 py-5 rounded-xl border-black border-2 mb-10" id="choiceselect">
+                    <option value="design">Design</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="programmeren">Programmeren</option>
+                    <option value="taal">Taal</option>
+                </select>
 
-        <form class="form" action="" method="post">
-            <input class="block w-64 mb-2 ml-auto mr-auto bg-transparent border-b border-black form_field md:w-72" type="text" name="coursename" placeholder="Naam van jouw vak">
-            <br>
+                <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Creeër cursus" name="submit">
+            </form>
 
-            <label for="cars">Welke catogorie past bij uw vak?</label>
-            <select name="category" class="form-control" id="choiceselect">
-                <option value="design">Design</option>
-                <option value="marketing">Marketing</option>
-                <option value="programmeren">Programmeren</option>
-                <option value="taal">Taal</option>
-            </select>
+        <?php } else { ?>
 
-            <input class="block w-64 h-12 mb-2 ml-auto mr-auto text-white shadow-md form_btn md:w-72 rounded-2xl" type="submit" value="Creeër cursus" name="submit">
-        </form>
-
-    <?php } else { ?>
-
-        <form class="form" action="" method="post">
-            <input class="block w-64 mb-2 ml-auto mr-auto bg-transparent border-b border-black form_field md:w-72" type="text" name="CheckCode" placeholder="Code">
-            <br>
-            <input class="block w-64 h-12 mb-2 ml-auto mr-auto text-white shadow-md form_btn md:w-72 rounded-2xl" type="submit" value="Controleer" name="controleer">
-        </form>
-    <?php } ?>
-
+            <form class="form" action="" method="post">
+                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="CheckCode" placeholder="Code">
+                <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Controleer" name="controleer">
+            </form>
+        <?php } ?>
+    </div>
 </body>
+<footer>
+    <?php include_once('nav.inc.php'); ?>
+</footer>
 
 </html>

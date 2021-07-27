@@ -185,7 +185,7 @@ class Question
     public function checkAnswer()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * from answers as answer INNER JOIN questions as question on answer.question_id = {$_GET["id"]} where answer.response = question.correct_answer AND answer.user_id = {$_SESSION["id"]}");
+        $statement = $conn->prepare("SELECT * from answers as answer INNER JOIN questions as question on answer.question_id = question.id where answer.response = question.correct_answer AND answer.user_id = {$_SESSION["id"]}");
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result > 0) {
@@ -218,6 +218,22 @@ class Question
     public function countScore() {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT count(*) from scores where user_id = {$_SESSION["id"]} and course_id = {$_GET["teamid"]}");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function printScoreForTeacher() {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * from users as user inner join scores as score on user.id = score.user_id where {$_GET["id"]} = score.course_id");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function countScoreForTeacher() {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT count(*) from scores where course_id = {$_GET["id"]}");
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;

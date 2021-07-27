@@ -61,5 +61,8 @@ if (isset($_GET['id'])) {
     </form>
 
 </body>
+<footer>
+    <?php include_once('nav.inc.php'); ?>
+</footer>
 
 </html>

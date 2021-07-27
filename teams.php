@@ -34,21 +34,28 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="public/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
     <title>PEERHOOD | Home</title>
 </head>
 
 <body>
-    <h1><?php echo $courseData['coursename'] ?></h1>
+    <div class="block ml-auto mr-auto w-64">
+        <h1 class="font-medium text-2xl my-10"><?php echo $courseData['coursename'] ?></h1>
 
-    <?php foreach ($teams as $team) : ?>
-        <a href="team.php?id=<?php echo $team['id'] ?>">
-            <?php echo $team['teamname']; ?>
-        </a>
-        <br>
-    <?php endforeach; ?>
+        <?php foreach ($teams as $team) : ?>
+            <a class="text-center outline-none block px-5 py-5 rounded-xl text-white bg-blue-400 hover:bg-blue-500" href="team.php?id=<?php echo $team['id'] ?>">
+                <?php echo $team['teamname']; ?>
+            </a>
+            <br>
+        <?php endforeach; ?>
 
-    <a href="addteam.php?id=<?php echo $courseData['id'] ?>">Maak een nieuw team</a>
-
+        <a class="text-center outline-none block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" href="addteam.php?id=<?php echo $courseData['id'] ?>">Maak een nieuw team</a>
+    </div>
 </body>
+<footer>
+    <?php include_once('nav.inc.php'); ?>
+</footer>
 
 </html>

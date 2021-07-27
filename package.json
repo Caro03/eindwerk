@@ -1,0 +1,23 @@
+{
+  "name": "eindwerk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-css": "tailwindcss build src/styles.css -o public/styles.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caro03/eindwerk.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Caro03/eindwerk/issues"
+  },
+  "homepage": "https://github.com/Caro03/eindwerk#readme",
+  "dependencies": {
+    "tailwindcss": "^2.2.7"
+  }
+}
