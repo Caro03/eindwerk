@@ -93,7 +93,7 @@ if (!empty($_POST['submitQuestion'])) {
 <body>
 
     <?php if ($PData['role_id'] == 'docent') { ?>
-        <div class="block ml-auto mr-auto w-64">
+        <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
             <h2 class="font-medium text-2xl my-10">Meerkeuzevraag maken</h2>
             <form action="" method="POST">
 
@@ -106,19 +106,19 @@ if (!empty($_POST['submitQuestion'])) {
                 <?php endif; ?>
 
                 <div>
-                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="vraag" id="vraag" placeholder="Wat is de vraag?">
+                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="vraag" id="vraag" placeholder="Wat is de vraag?">
                 </div>
                 <div>
-                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="correctantwoord" id="correctantwoord" placeholder="Correct antwoord">
+                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="correctantwoord" id="correctantwoord" placeholder="Correct antwoord">
                 </div>
                 <div>
-                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord1" id="foutantwoord1" placeholder="Fout antwoord 1">
+                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord1" id="foutantwoord1" placeholder="Fout antwoord 1">
                 </div>
                 <div>
-                    <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord2" id="foutantwoord2" placeholder="Fout antwoord 2">
+                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord2" id="foutantwoord2" placeholder="Fout antwoord 2">
                 </div>
                 <div>
-                    <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4" type="submit" name="submitQuestion" value="Post quiz">
+                    <input class="md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" name="submitQuestion" value="Post quiz">
                 </div>
             </form>
         </div>
@@ -126,22 +126,24 @@ if (!empty($_POST['submitQuestion'])) {
     <?php } ?>
 
     <?php if ($PData['role_id'] == 'student') { ?>
-        <?php if ($c == false) { ?>
-            <h2 class="mb-5 text-center"><?php echo $q['question'] ?></h2>
+        <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
+            <?php if ($c == false) { ?>
+                <h2 class="font-medium text-2xl mt-10 mb-5 text-center"><?php echo $q['question'] ?></h2>
 
-            <form action="" method="POST">
-                <div class="mb-10 space-y-2 text-center">
-                    <input type="radio" id="answer1" name="answer" value="<?php echo $randomA = $a[0];  ?>">
-                    <label for="answer1"><?php echo $randomA = $a[0]; ?></label><br>
-                    <input type="radio" id="answer2" name="answer" value="<?php echo $randomA = $a[1];  ?>">
-                    <label for="answer2"><?php echo $randomA = $a[1]; ?></label><br>
-                    <input type="radio" id="answer3" name="answer" value="<?php echo $randomA = $a[2];  ?>">
-                    <label for="answer3"><?php echo $randomA = $a[2]; ?></label><br>
-                </div>
-                <div>
-                    <input type="submit" name="indienen" value="Indienen">
-            </form>
-        <?php } ?>
+                <form action="" method="POST">
+                    <div class="mb-10 space-y-2 text-center">
+                        <input type="radio" id="answer1" name="answer" value="<?php echo $randomA = $a[0];  ?>">
+                        <label for="answer1"><?php echo $randomA = $a[0]; ?></label><br>
+                        <input type="radio" id="answer2" name="answer" value="<?php echo $randomA = $a[1];  ?>">
+                        <label for="answer2"><?php echo $randomA = $a[1]; ?></label><br>
+                        <input type="radio" id="answer3" name="answer" value="<?php echo $randomA = $a[2];  ?>">
+                        <label for="answer3"><?php echo $randomA = $a[2]; ?></label><br>
+                    </div>
+                    <div>
+                        <input class="outline-none w-56 md:w-72 lg:w-80 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" name="indienen" value="Indienen">
+                </form>
+            <?php } ?>
+        </div>
     <?php } ?>
 
 </body>

@@ -88,7 +88,7 @@ if ($userData['role_id'] == 'student') {
 </head>
 
 <body>
-    <div class="block ml-auto mr-auto w-64">
+    <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
         <?php if ($userData['role_id'] == 'docent') { ?>
             <h2 class="font-medium text-2xl mt-10 mb-5">Nieuwe cursus</h2>
             <h2 class="font-medium text-2xl mb-10 mb-5">Welk vak geef jij?</h2>
@@ -110,26 +110,26 @@ if ($userData['role_id'] == 'student') {
         <?php if ($userData['role_id'] == 'docent') { ?>
 
             <form class="form" action="" method="post">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="coursename" placeholder="Naam van jouw vak">
+                <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="coursename" placeholder="Naam van jouw vak">
 
-                <div class="pb-5">
+                <div class="pb-5 pt-5">
                     <label for="cars">Welke categorie past bij jouw vak?</label>
                 </div>
-                <select name="category" class="outline-none w-56 block px-5 py-5 rounded-xl border-black border-2 mb-10" id="choiceselect">
+                <select name="category" class="md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl border-black border-2 mb-10" id="choiceselect">
                     <option value="design">Design</option>
                     <option value="marketing">Marketing</option>
                     <option value="programmeren">Programmeren</option>
                     <option value="taal">Taal</option>
                 </select>
 
-                <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Creeër cursus" name="submit">
+                <input class="md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Creeër cursus" name="submit">
             </form>
 
         <?php } else { ?>
 
             <form class="form" action="" method="post">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="CheckCode" placeholder="Code">
-                <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Controleer" name="controleer">
+                <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="CheckCode" placeholder="Code">
+                <input class="md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Controleer" name="controleer">
             </form>
         <?php } ?>
     </div>

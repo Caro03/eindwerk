@@ -2,12 +2,16 @@
 include_once(__DIR__ . "/classes/Course.php");
 include_once(__DIR__ . "/classes/Team.php");
 include_once(__DIR__ . "/classes/Forum.php");
+include_once(__DIR__ . "/classes/User.php");
 
 session_start();
 $email = $_SESSION["user"];
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
 }
+
+$user = new User();
+$PData = $user->allData();
 
 $posts = new Forum();
 $allPosts = $posts->getForumPosts();
@@ -56,7 +60,7 @@ if (!empty($_POST['submitComment'])) {
 </head>
 
 <body>
-    <div class="block ml-auto mr-auto w-64">
+    <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
 
         <?php if (isset($error)) : ?>
             <div class="mt-5 text-red-500 font-medium">
@@ -67,16 +71,18 @@ if (!empty($_POST['submitComment'])) {
         <?php endif; ?>
 
         <form class="my-10" action="" method="post">
-            <textarea class="w-64 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Schrijf een nieuwe post" name="post" id="postcontent" cols="20" rows="5"></textarea>
-            <input class="outline-none w-64 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Post" name="submitPost" id="submitPost">
+            <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Schrijf een nieuwe post" name="post" id="postcontent" cols="20" rows="5"></textarea>
+            <input class="outline-none w-64 md:w-72 lg:w-80 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Post" name="submitPost" id="submitPost">
         </form>
 
         <?php foreach ($allPosts as $post) : ?>
             <div class="bg-gray-200 my-5 rounded-xl px-5 py-5 hover:bg-gray-300">
-                <a href="forumDetail.php?id=<?php echo $post['id'] ?>">
-                    <p class="font-medium pb-2"><?php echo $post['firstname'] . " " . $post['lastname']; ?></p>
-                    <p><?php echo $post['left(posts.content,100)'] . "..."; ?></p>
-                </a>
+
+                    <a href="forumDetail.php?id=<?php echo $post['id'] ?>">
+                    <p class="font-medium pb-2"><?php if ($post['roleChoice'] == 0) { ?><?php echo $post['firstname'] . " " . $post['lastname']; ?><?php } ?><?php if ($post['roleChoice'] == 1) { ?>Anoniem<?php } ?></p>
+                        <p><?php echo $post['left(posts.content,100)'] . "..."; ?></p>
+                    </a>
+
             </div>
         <?php endforeach; ?>
     </div>

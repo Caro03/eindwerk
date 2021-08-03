@@ -41,25 +41,31 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursussen</title>
+    <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="public/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
+    <title>PEERHOOD</title>
 </head>
 
 <body>
 
-    <?php if (isset($error)) : ?>
-        <div class="mb-5 text-center form_error">
-            <p class="form_error">
-                <?php echo $error; ?>
-            </p>
-        </div>
-    <?php endif; ?>
+    <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
 
-    <form class="form" action="" method="post">
-        <input class="block w-64 mb-2 ml-auto mr-auto bg-transparent border-b border-black form_field md:w-72" type="text" name="teamname" placeholder="Naam van het team">
-        <br>
-        <input class="block w-64 h-12 mb-2 ml-auto mr-auto text-white shadow-md form_btn md:w-72 rounded-2xl" type="submit" value="Maak nieuw team" name="submit">
-    </form>
+        <h2 class="font-medium text-xl my-10">Nieuw team toevoegen</h2>
 
+        <?php if (isset($error)) : ?>
+            <div class="mb-5 text-red-500 font-medium">
+                <p class="form_error">
+                    <?php echo $error; ?>
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <form class="form" action="" method="post">
+            <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="teamname" placeholder="Naam van het team">
+            <input class="md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Maak nieuw team" name="submit">
+        </form>
+    </div>
 </body>
 <footer>
     <?php include_once('nav.inc.php'); ?>

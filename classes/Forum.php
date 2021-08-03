@@ -21,9 +21,33 @@ class Forum
 
     public function getForumPosts(){
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT posts.id, left(posts.content,100), users.firstname, users.lastname FROM posts INNER JOIN users ON users.id = posts.user_id ORDER BY posts.id DESC");
+        $statement = $conn->prepare("SELECT posts.id, left(posts.content,100), users.firstname, users.lastname, users.roleChoice FROM posts INNER JOIN users ON users.id = posts.user_id ORDER BY posts.id DESC");
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getPostsId(){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select * from comments inner join users as user on comments.user_id = user.id where post_id = {$_GET["id"]} limit 1");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getCommentId(){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select * from comments where post_id = {$_GET["id"]} limit 1");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function printLikes(){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select * from comments inner join users as user on comments.user_id = user.id where post_id = {$_GET["id"]}");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 
@@ -45,6 +69,15 @@ class Forum
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function saveLike() {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("update comments set likes = 1 where post_id = {$_GET["id"]} and user_id = {$_GET["user"]}");
+
+        $result = $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result; 
+}
 
     public function idFromPost()
     {

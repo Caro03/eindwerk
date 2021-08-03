@@ -14,6 +14,7 @@ class Question
     private $solution_id;
     private $answer;
     private $user_id;
+    private $id;
 
     public function getOnderwerp()
     {
@@ -190,8 +191,7 @@ class Question
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if ($result > 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -199,7 +199,7 @@ class Question
     public function saveScore()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("insert into scores (user_id, course_id, value) values ({$_SESSION["id"]}, {$_GET["id"]}, 10)");
+        $statement = $conn->prepare("insert into scores (user_id, course_id, team_id, value) values ({$_SESSION["id"]}, {$_GET["id"]}, {$_GET["team"]}, 10)");
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         if (empty($result)) {
@@ -207,7 +207,8 @@ class Question
         }
     }
 
-    public function printScore() {
+    public function printScore()
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT * from scores where user_id = {$_SESSION["id"]} and course_id = {$_GET["teamid"]}");
         $statement->execute();
@@ -215,7 +216,8 @@ class Question
         return $result;
     }
 
-    public function countScore() {
+    public function countScore()
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT count(*) from scores where user_id = {$_SESSION["id"]} and course_id = {$_GET["teamid"]}");
         $statement->execute();
@@ -223,7 +225,80 @@ class Question
         return $result;
     }
 
-    public function printScoreForTeacher() {
+    public function printTeamScore()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * from scores where team_id = {$_GET["team"]}");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function countTeamScore()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT count(*) from scores where team_id = {$_GET["team"]}");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function printScoreTeacher()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT scores.value, user.firstname, user.lastname from scores INNER join users as user where scores.user_id = user.id and scores.course_id = {$_GET["id"]}");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function countScoreTeacher()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT count(*) from scores inner join users as user where scores.user_id = user.id and scores.course_id = {$_GET["id"]}");
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function printScoreStudent($course_id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * from scores inner join users as user where user_id = {$_GET["id"]} and course_id = :courseid");
+
+        $course_id = $this->getCourse_id();
+        $statement->bindParam(":courseid", $course_id);
+
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function printScoreTeam()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * from scores inner join teams as team on scores.team_id = team.id");
+
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function countScoreStudent($id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select count(*) from users inner join scores as score on users.id = score.user_id INNER join courses as course on score.course_id = course.id where users.id = :id");
+
+        $id = $this->getId();
+        $statement->bindParam(":id", $id);
+
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function printScoreForTeacher()
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT * from users as user inner join scores as score on user.id = score.user_id where {$_GET["id"]} = score.course_id");
         $statement->execute();
@@ -231,7 +306,8 @@ class Question
         return $result;
     }
 
-    public function countScoreForTeacher() {
+    public function countScoreForTeacher()
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT count(*) from scores where course_id = {$_GET["id"]}");
         $statement->execute();
@@ -311,6 +387,26 @@ class Question
     public function setUserId($user_id): self
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }

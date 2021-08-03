@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
 </head>
 
 <body>
-    <div class="block ml-auto mr-auto w-64">
+    <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
         <h1 class="font-medium text-2xl my-10"><?php echo $team['teamname'] ?></h1>
         <div class="mb-10 space-y-2">
             <?php foreach ($members as $member) : ?>

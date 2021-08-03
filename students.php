@@ -13,8 +13,8 @@ if (isset($_GET['id'])) {
 
     $fetchQuestion = new Question();
     $questionData = $fetchQuestion->fetchQuestionById();
-    $printScore = $fetchQuestion->printScoreForTeacher();
-    $countScore = $fetchQuestion->countScoreForTeacher();
+    $printScore = $fetchQuestion->printScoreTeacher();
+    $countScore = $fetchQuestion->countScoreTeacher();
 }
 
 ?>
@@ -33,11 +33,11 @@ if (isset($_GET['id'])) {
 </head>
 
 <body>
-    <div class="block ml-auto mr-auto w-64">
+    <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
         <h1 class="font-medium text-2xl my-10">Alle studenten</h1>
         <div class="mb-5 space-y-2">
             <?php foreach ($members as $member) : ?>
-                <li class="list-none"><?php echo $member['firstname'] . " " . $member['lastname'] ?></li>
+                <a class="text-center outline-none block px-5 py-5 rounded-xl text-white bg-blue-400 hover:bg-blue-500" href="student.php?id=<?php echo $member['student_id'] ?>&course=<?php echo $member['course_id'] ?>" class="flex flex-col"><?php echo $member['firstname'] . " " . $member['lastname']; ?></a>
             <?php endforeach; ?>
         </div>
     </div>

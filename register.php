@@ -59,11 +59,11 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-    <div class="block ml-auto mr-auto w-64">
+    <div class="block ml-auto mr-auto w-64 md:w-72">
         <img class="" src="./images/logo-slogan.png">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
-            <h2 class="font-medium text-2xl my-10">Registreren</h2>
+            <h2 class="text-center font-medium text-2xl my-10">Registreren</h2>
 
             <?php if (isset($error)) : ?>
                 <div class="mb-5 text-red-500 font-medium">
@@ -74,36 +74,36 @@ if (!empty($_POST)) {
             <?php endif; ?>
 
             <div class="form_field">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="First name" type="text" name="firstname" id="firstname">
+                <input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" placeholder="First name" type="text" name="firstname" id="firstname">
             </div>
 
             <div class="form_field">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Last name" type="text" name="lastname" id="lastname">
+                <input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" placeholder="Last name" type="text" name="lastname" id="lastname">
             </div>
 
             <div class="form_field">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Email" type="text" name="email" id="email">
+                <input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" placeholder="Email" type="text" name="email" id="email">
             </div>
 
             <div class="form_field">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Password" type="password" name="password" id="password">
+                <input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" placeholder="Password" type="password" name="password" id="password">
             </div>
 
             <div class="form_field">
-                <input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Verify password" type="password" name="verifyPassword" id="verifyPassword">
+                <input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" placeholder="Verify password" type="password" name="verifyPassword" id="verifyPassword">
             </div>
 
-            <select name="role" class="outline-none w-56 block px-5 py-5 rounded-xl border-black border-2 mb-10" id="choiceselect">
+            <select name="role" class="ml-auto mr-auto outline-none w-56 block px-5 py-5 rounded-xl border-black border-2 mb-10 md:w-72" id="choiceselect">
                 <option value="student">Ik ben een student</option>
                 <option value="docent">Ik ben een docent</option>
             </select>
 
             <div class="form_button">
-                <input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Registreren" name="register" id="register">
+                <input class="ml-auto mr-auto outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500 md:w-72" type="submit" value="Registreren" name="register" id="register">
             </div>
 
         </form>
-        <div class="-ml-10 text-center mb-10">
+        <div class="text-center mb-10">
             <a class="text-sm" href="login.php">Al een account? Log je hier in</a>
         </div>
     </div>

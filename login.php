@@ -43,11 +43,11 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-	<div class="block ml-auto mr-auto w-64">
+	<div class="block ml-auto mr-auto w-64 md:w-72">
 		<img class="logo" src="images/logo-wit.svg">
 		<div class="form form--login">
 			<form action="" method="post">
-				<h2 class="font-medium text-2xl my-10">Login</h2>
+				<h2 class="text-center font-medium text-2xl my-10">Login</h2>
 
 				<?php if (isset($error)) : ?>
 					<div class="mb-5 text-red-500 font-medium">
@@ -58,19 +58,19 @@ if (!empty($_POST)) {
 				<?php endif; ?>
 
 				<div class="form__field">
-					<input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" class="form-control" id="email" name="email" placeholder="Email">
+					<input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" type="text" class="form-control" id="email" name="email" placeholder="Email">
 				</div>
 
 				<div class="form__field">
-					<input class="outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="password" class="form-control" id="password" name="password" placeholder="Passwoord">
+					<input class="ml-auto mr-auto outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4 md:w-72" type="password" class="form-control" id="password" name="password" placeholder="Passwoord">
 				</div>
 
 				<div class="form__field">
-					<input class="outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Login" class="btn btn--primary">
+					<input class="ml-auto mr-auto outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500 md:w-72" type="submit" value="Login" class="btn btn--primary">
 				</div>
 			</form>
 		</div>
-		<div class="-ml-10 text-center">
+		<div class="text-center">
 			<a class="text-sm" href="register.php">Nog geen account?</a>
 		</div>
 	</div>
