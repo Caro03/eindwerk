@@ -15,6 +15,7 @@ class Question
     private $answer;
     private $user_id;
     private $id;
+    private $deadline;
 
     public function getOnderwerp()
     {
@@ -85,15 +86,16 @@ class Question
         return $this;
     }
 
-    public function saveQuestion($course_id, $vraag, $correctantwoord, $foutantwoord1, $foutantwoord2)
+    public function saveQuestion($course_id, $vraag, $correctantwoord, $foutantwoord1, $foutantwoord2, $deadline)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("insert into questions (course_id, question, correct_answer, false_answer1, false_answer2) values (:courseID, :question, :correct_answer, :false_answer1, :false_answer2)");
+        $statement = $conn->prepare("insert into questions (course_id, question, correct_answer, false_answer1, false_answer2, deadline) values (:courseID, :question, :correct_answer, :false_answer1, :false_answer2, :deadline)");
         $statement->bindParam(":courseID", $course_id);
         $statement->bindParam(":question", $vraag);
         $statement->bindParam(":correct_answer", $correctantwoord);
         $statement->bindParam(":false_answer1", $foutantwoord1);
         $statement->bindParam(":false_answer2", $foutantwoord2);
+        $statement->bindParam(":deadline", $deadline);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
@@ -159,7 +161,7 @@ class Question
     public function submitAnswer($question_id, $answer)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO answers (question_id, user_id, response) VALUES (:question_id, {$_SESSION["id"]}, :response)");
+        $statement = $conn->prepare("INSERT INTO answers (question_id, user_id, course_id, team_id, response) VALUES (:question_id, {$_SESSION["id"]}, {$_GET["id"]}, {$_GET["team"]}, :response)");
         $statement->bindParam(":question_id", $question_id);
         //$statement->bindParam(":userID", $user_id);
         $statement->bindParam(":response", $answer);
@@ -186,14 +188,10 @@ class Question
     public function checkAnswer()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * from answers as answer INNER JOIN questions as question on answer.question_id = question.id where answer.response = question.correct_answer AND answer.user_id = {$_SESSION["id"]}");
+        $statement = $conn->prepare("SELECT * from answers as answer INNER JOIN questions as question on answer.question_id = question.id where answer.user_id = {$_SESSION["id"]} order by answer.id desc");
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($result > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
     public function saveScore()
@@ -258,6 +256,15 @@ class Question
         $statement = $conn->prepare("SELECT count(*) from scores inner join users as user where scores.user_id = user.id and scores.course_id = {$_GET["id"]}");
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function countAnswersLeaderboard()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select teams.id, teams.teamname, (select count(*) FROM scores where (scores.team_id = teams.id)) FROM teams order by (select count(*) FROM scores where (scores.team_id = teams.id)) DESC limit 10");
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
 
@@ -393,7 +400,7 @@ class Question
 
     /**
      * Get the value of id
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -403,10 +410,34 @@ class Question
      * Set the value of id
      *
      * @return  self
-     */ 
+     */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deadline
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
+
+    /**
+     * Set the value of deadline
+     *
+     * @return  self
+     */
+    public function setDeadline($deadline)
+    {
+        if (empty($deadline)) {
+            throw new Exception("De deadline mag niet leeg zijn!");
+        }
+
+        $this->deadline = $deadline;
 
         return $this;
     }

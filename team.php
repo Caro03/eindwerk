@@ -36,9 +36,6 @@ if (isset($_GET['id'])) {
                 <li class="list-none"><?php echo $member['firstname'] . " " . $member['lastname'] ?></li>
             <?php endforeach; ?>
         </div>
-        <a class="text-center outline-none block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" href="editteam.php?id=<?php echo $team['id'] ?>" class="">
-            Voeg studenten toe
-        </a>
     </div>
 </body>
 <footer>

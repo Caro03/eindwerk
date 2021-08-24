@@ -26,7 +26,8 @@ if (isset($_GET['id'])) {
             $team->setCourseID($courseID);
             $team->setTeamname($teamname);
             $team->createTeam();
-            $error = "Jouw team is succecvol aangemaakt!";
+            $good = "Jouw team is succecvol aangemaakt!";
+            header("Location: index.php");
         } else {
             $error = "Naam van team mag niet leeg zijn";
         }
@@ -57,6 +58,14 @@ if (isset($_GET['id'])) {
             <div class="mb-5 text-red-500 font-medium">
                 <p class="form_error">
                     <?php echo $error; ?>
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($good)) : ?>
+            <div class="mb-5 text-green-500 font-medium">
+                <p class="form_error">
+                    <?php echo $good; ?>
                 </p>
             </div>
         <?php endif; ?>

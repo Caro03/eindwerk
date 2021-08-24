@@ -36,8 +36,8 @@ $userCourses = $getUserCourses->fetchCourseForUser();
 </head>
 
 <body>
-    <div class="block ml-auto mr-auto md:w-72 lg:w-80 w-64">
-        <div class="flex items-baseline justify-center my-10 space-x-5 lg:space-x-20 md:space-x-14">
+    <div class="block ml-auto mr-auto w-full ">
+        <div class="flex items-baseline justify-center my-10 space-x-5 lg:space-x-20 md:space-x-18">
             <h1 class="font-medium text-2xl">Hey <?php echo $PData['firstname'] ?></h1>
             <div class="">
                 <a class="" href="addcourse.php">Cursus toevoegen</a>
@@ -45,19 +45,19 @@ $userCourses = $getUserCourses->fetchCourseForUser();
         </div>
 
         <?php foreach ($courseData as $data) : ?>
-            <a class="ml-auto mr-auto block text-center w-64 px-10 py-5 rounded-xl md:w-72 lg:w-80 <?php if ($data['category'] == 'taal') { ?>bg-blue-500 text-white hover:bg-blue-600<?php } ?> <?php if ($data['category'] == 'programmeren') { ?>bg-green-500 text-white hover:bg-green-600<?php } ?> <?php if ($data['category'] == 'design') { ?>bg-pink-500 text-white hover:bg-pink-600<?php } ?> <?php if ($data['category'] == 'marketing') { ?>bg-yellow-500 text-white hover:yellow-600<?php } ?>" href="course.php?id=<?php echo $data['id'] ?>">
-                <?php echo $data['coursename']; ?>
-            </a>
-            <br>
+            <div class="max-w-sm mx-auto my-4">
+                <a class="block text-center w-full px-10 py-5 rounded-xl <?php if ($data['category'] == 'taal') { ?>bg-blue-500 text-white hover:bg-blue-600<?php } ?> <?php if ($data['category'] == 'programmeren') { ?>bg-green-500 text-white hover:bg-green-600<?php } ?> <?php if ($data['category'] == 'design') { ?>bg-pink-500 text-white hover:bg-pink-600<?php } ?> <?php if ($data['category'] == 'marketing') { ?>bg-yellow-500 text-white hover:yellow-600<?php } ?>" href="course.php?id=<?php echo $data['id'] ?>">
+                    <?php echo $data['coursename']; ?>
+                </a>
+            </div>
         <?php endforeach; ?>
 
         <?php foreach ($userCourses as $userCourse) : ?>
-            <div class="">
-                <a class="ml-auto mr-auto block text-center w-64 px-10 py-5 rounded-xl md:w-72 lg:w-80 <?php if ($userCourse['category'] == 'taal') { ?>bg-blue-500 text-white hover:bg-blue-600<?php } ?> <?php if ($userCourse['category'] == 'programmeren') { ?>bg-green-500 text-white hover:bg-green-600<?php } ?> <?php if ($userCourse['category'] == 'design') { ?>bg-pink-500 text-white hover:bg-pink-600<?php } ?> <?php if ($userCourse['category'] == 'marketing') { ?>bg-yellow-500 text-white hover:yellow-600<?php } ?>" href="course.php?teamid=<?php echo $userCourse['course_id'] ?>&team=<?php echo $userCourse['team_id'] ?>">
+            <div class="max-w-sm mx-auto my-4">
+                <a class="block text-center w-full px-10 py-5 rounded-xl  <?php if ($userCourse['category'] == 'taal') { ?>bg-blue-500 text-white hover:bg-blue-600<?php } ?> <?php if ($userCourse['category'] == 'programmeren') { ?>bg-green-500 text-white hover:bg-green-600<?php } ?> <?php if ($userCourse['category'] == 'design') { ?>bg-pink-500 text-white hover:bg-pink-600<?php } ?> <?php if ($userCourse['category'] == 'marketing') { ?>bg-yellow-500 text-white hover:yellow-600<?php } ?>" href="course.php?teamid=<?php echo $userCourse['course_id'] ?>&team=<?php echo $userCourse['team_id'] ?>">
                     <?php echo $userCourse['coursename']; ?>
                 </a>
             </div>
-            <br>
         <?php endforeach; ?>
     </div>
 

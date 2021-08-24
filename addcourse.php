@@ -33,7 +33,8 @@ if ($userData['role_id'] == 'docent') {
         if (!isset($error)) {
             // methode
             $course->createCourse();
-            $error = "De cursus is succesvol opgeslagen! Ga naar de cursus om de code te bekijken";
+            $good = "De cursus is succesvol opgeslagen! Ga naar de cursus om de code te bekijken";
+            header("Location: index.php");
         }
     }
 }
@@ -49,8 +50,9 @@ if ($userData['role_id'] == 'student') {
                 $courseID = $idArray['id'];
                 $course->setCourseID($courseID);
                 //$courses = $course->fetchCoursesById();
-                $error = "Je bent succesvol toegevoegd aan deze cursus";
+                $good = "Je bent succesvol toegevoegd aan deze cursus";
                 $course->saveStudent();
+                header("Location: index.php");
 
                 $team = new Team();
                 $r = $team->fetchAvailableGroups($courseID);
@@ -103,6 +105,14 @@ if ($userData['role_id'] == 'student') {
             <div class="mb-5 text-red-500 font-medium">
                 <p class="form_error">
                     <?php echo $error; ?>
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($good)) : ?>
+            <div class="mb-5 text-green-500 font-medium">
+                <p class="form_error">
+                    <?php echo $good; ?>
                 </p>
             </div>
         <?php endif; ?>

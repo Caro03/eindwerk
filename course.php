@@ -59,32 +59,32 @@ if (isset($_GET['teamid'])) {
 </head>
 
 <body>
-    <?php if ($PData['role_id'] == 'docent') { ?>
-        <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
+    <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-96">
+        <?php if ($PData['role_id'] == 'docent') { ?>
             <h1 class="font-medium text-2xl mt-10 mb-2"><?php echo $courseData['coursename'] ?></h1>
             <h2 class="font-medium text-xl mb-10">Cursuscode: <?php echo $courseData['code'] ?></h2>
 
             <a class="block text-center px-5 py-5 rounded-xl text-white bg-green-400 mb-4 hover:bg-green-500" href="question.php?id=<?php echo $courseData['id'] ?>">Nieuwe vraag uploaden</a>
             <a class="block text-center px-5 py-5 rounded-xl text-white bg-blue-400 mb-4 hover:bg-blue-500" href="teams.php?id=<?php echo $courseData['id'] ?>">Bekijk teams</a>
             <a class="block text-center px-5 py-5 rounded-xl text-white bg-purple-400 hover:bg-purple-500" href="students.php?id=<?php echo $courseData['id'] ?>">Bekijk alle studenten</a>
-        </div>
 
-    <?php } else { ?>
-        <div class="block ml-auto mr-auto w-64">
-            <h1 class="font-medium text-2xl my-10"><?php echo $team['teamname'] ?></h1>
 
-            <?php foreach ($countTeamScores as $countTeam) : ?>
-                <h2 class="mb-2">Team score: <span class="font-medium"> <?php echo $countTeam * $teamScores['value']; ?></span></h2>
-            <?php endforeach; ?>
+        <?php } else { ?>
+            <div class="block ml-auto mr-auto">
+                <h1 class="font-medium text-2xl my-10"><?php echo $team['teamname'] ?></h1>
 
-            <?php foreach ($countScore as $score) : ?>
-                <h2 class="mb-10">Jouw persoonlijke score: <span class="font-medium"> <?php echo $score * $printScore['value']; ?></span></h2>
-            <?php endforeach; ?>
+                <?php foreach ($countTeamScores as $countTeam) : ?>
+                    <h2 class="mb-2">Team score: <span class="font-medium"> <?php echo $countTeam * $teamScores['value']; ?></span></h2>
+                <?php endforeach; ?>
 
-            <a class="ml-auto mr-auto block text-center px-5 py-5 rounded-xl text-white bg-green-400 hover:bg-green-500" href="question.php?id=<?php echo $team['course_id'] ?>&team=<?php echo $team['team_id'] ?>">Nieuwe vraag beantwoorden</a>
-        <?php } ?>
-        </div>
+                <?php foreach ($countScore as $score) : ?>
+                    <h2 class="mb-10">Jouw persoonlijke score: <span class="font-medium"> <?php echo $score * $printScore['value']; ?></span></h2>
+                <?php endforeach; ?>
 
+                <a class="ml-auto mr-auto block text-center px-5 py-5 rounded-xl text-white bg-green-400 hover:bg-green-500" href="question.php?id=<?php echo $team['course_id'] ?>&team=<?php echo $team['team_id'] ?>">Nieuwe vraag beantwoorden</a>
+            <?php } ?>
+            </div>
+    </div>
 </body>
 <footer>
     <?php include_once('nav.inc.php'); ?>

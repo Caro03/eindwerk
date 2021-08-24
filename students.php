@@ -26,6 +26,7 @@ if (isset($_GET['id'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
@@ -33,11 +34,14 @@ if (isset($_GET['id'])) {
 </head>
 
 <body>
+
     <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
         <h1 class="font-medium text-2xl my-10">Alle studenten</h1>
         <div class="mb-5 space-y-2">
             <?php foreach ($members as $member) : ?>
-                <a class="text-center outline-none block px-5 py-5 rounded-xl text-white bg-blue-400 hover:bg-blue-500" href="student.php?id=<?php echo $member['student_id'] ?>&course=<?php echo $member['course_id'] ?>" class="flex flex-col"><?php echo $member['firstname'] . " " . $member['lastname']; ?></a>
+                <a class="text-center outline-none block px-5 py-5 rounded-xl text-white bg-blue-400 hover:bg-blue-500" href="student.php?id=<?php echo $member['student_id'] ?>&course=<?php echo $member['course_id'] ?>" class="flex flex-col">
+                    <?php echo $member['firstname'] . " " . $member['lastname']; ?>
+                </a>
             <?php endforeach; ?>
         </div>
     </div>

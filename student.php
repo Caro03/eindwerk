@@ -16,6 +16,7 @@ if (isset($_GET['id']) && $_GET['course']) {
     $countAnswers = $user->countAnswers($id);
     $correctAnswer = $user->countCorrectAnswers($id, $course_id);
     $falseAnswer = $user->countFalseAnswers($id, $course_id);
+    $countNuttig = $user->countNuttig($id);
 }
 
 ?>
@@ -38,12 +39,19 @@ if (isset($_GET['id']) && $_GET['course']) {
         <div class="mb-5 space-y-4">
             <?php foreach ($countScore as $score) : ?>
                 <h1 class="font-medium text-2xl my-10"><?php echo $userData['firstname'] . " " . $userData['lastname']; ?></h1>
-                <p>Score voor dit vak: <span class="font-medium"><?php echo $score * $userData['value']; ?></span></p>
-            <?php endforeach; ?>
-            <p>Aantal juiste antwoorden: <span class="font-medium"><?php echo $correctAnswer['count(*)']; ?></span></p>
-            <p>Aantal foute antwoorden: <span class="font-medium"><?php echo $falseAnswer['count(*)']; ?></span></p>
-            <p>Aantal vragen gesteld: <span class="font-medium"><?php echo $countQuestions['count(*)']; ?></span></p>
-            <p>Aantal vragen beantwoord: <span class="font-medium"><?php echo $countAnswers['count(*)']; ?></span></p>
+                <div class="space-y-2 bg-gray-200 my-5 rounded-xl px-5 py-5">
+                    <p class="font-medium text-lg">Info over quiz</p>
+                    <p>Score voor dit vak: <span class="font-medium"><?php echo $score * $userData['value']; ?></span></p>
+                <?php endforeach; ?>
+                <p>Aantal juiste antwoorden: <span class="font-medium"><?php echo $correctAnswer['count(*)']; ?></span></p>
+                <p>Aantal foute antwoorden: <span class="font-medium"><?php echo $falseAnswer['count(*)']; ?></span></p>
+                </div>
+                <div class="space-y-2 bg-gray-200 my-5 rounded-xl px-5 py-5">
+                    <p class="font-medium text-lg">Info over forum</p>
+                    <p>Aantal vragen gesteld: <span class="font-medium"><?php echo $countQuestions['count(*)']; ?></span></p>
+                    <p>Aantal vragen beantwoord: <span class="font-medium"><?php echo $countAnswers['count(*)']; ?></span></p>
+                    <p>Aantal nuttige antwoorden gegeven: <span class="font-medium"><?php echo $countNuttig['count(*)']; ?></span></p>
+                </div>
         </div>
     </div>
 </body>

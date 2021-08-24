@@ -12,6 +12,7 @@ if (!isset($_SESSION['user'])) {
 
 $user = new User();
 $PData = $user->allUserData();
+$allData = $user->allData();
 
 $forum = new Forum();
 $forumPost = $forum->getForumPosts();
@@ -26,17 +27,21 @@ if (isset($_GET['id'])) {
 }
 
 if (!empty($_POST['submitComment'])) {
-    if (!empty($_POST['post'])) {
-        $postContent = $_POST['post'];
-        $postForum = new Forum();
-        $idArray = $postForum->idFromPost();
-        //$postID = $idArray['id'];
-        //$postForum->setPostID($postID);
-        $postForum->setPostContent($postContent);
-        $post = $postForum->postComment($postContent);
-        $allComments = $posts->getComments();
-        //$allPosts = $posts->getForumPosts();
-    }
+    $postContent = $_POST['content'];
+    $postForum = new Forum();
+    $idArray = $postForum->idFromPost();
+    //$postID = $idArray['id'];
+    //$postForum->setPostID($postID);
+    $postForum->setPostContent($postContent);
+    $post = $postForum->postComment($postContent);
+    $allComments = $posts->getComments();
+    //$allPosts = $posts->getForumPosts();
+}
+
+if (!empty($_POST['like'])) {
+    $commentsId = $_POST['like'];
+    $forum->setCommentsId($commentId);
+    $like = $forum->saveDislike();
 }
 
 ?>
@@ -59,8 +64,9 @@ if (!empty($_POST['submitComment'])) {
         <div class="my-10">
             <?php foreach ($allPosts as $post) : ?>
                 <div class="bg-gray-200 my-5 rounded-xl px-5 py-5">
-                    <p class="font-medium pb-2"><?php if ($post['roleChoice'] == 0) { ?><?php echo $post['firstname'] . " " . $post['lastname']; ?><?php } ?><?php if ($post['roleChoice'] == 1) { ?>Anoniem<?php } ?></p>
-                    <p><?php echo $post['content']; ?></p>
+                    <p class="font-medium pb-2"><?php echo $post['title']; ?></p>
+                    <p class="pb-5"><?php echo $post['content']; ?></p>
+                    <p class="text-xs"><?php if (date('Ymd') == date('Ymd', strtotime($post['date']))) { ?>Vandaag<?php } ?><?php if (date('Ymd', strtotime($post['date'])) == date('Ymd', strtotime('-1 day'))) { ?>Gisteren<?php } ?><?php if (date('Ymd') != date('Ymd', strtotime($post['date'])) && date('Ymd', strtotime($post['date'])) != date('Ymd', strtotime('-1 day')) && date('Y') == date('Y', strtotime($post['date']))) { ?><?php echo date('d M', strtotime($post['date'])) ?><?php } ?><?php if (date('Y') != date('Y', strtotime($post['date']))) { ?><?php echo date('d M Y', strtotime($post['date'])) ?><?php } ?> gevraagd door <span class="font-medium"><?php if ($post['roleChoice'] == 0) { ?><?php echo $post['firstname'] . " " . $post['lastname']; ?></span><?php } ?><?php if ($post['roleChoice'] == 1) { ?><span class="font-medium">Anoniem<?php } ?></span></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -69,31 +75,54 @@ if (!empty($_POST['submitComment'])) {
             <div class="mb-5">
                 <p class="font-medium pb-2"><?php if ($comment['roleChoice'] == 0) { ?><?php echo $comment['firstname'] . " " . $comment['lastname']; ?><?php } ?><?php if ($comment['roleChoice'] == 1) { ?>Anoniem<?php } ?><?php if ($comment['role_id'] == 'docent') { ?> (docent)<?php } ?></p>
                 <p><?php echo $comment['content']; ?></p>
-                <?php if ($comment['likes'] == 1) { ?>
-                    <p class="text-sm text-green-500 mt-5">Deze comment is als nuttig verklaart</p>
+
+                <?php if ($comment['likes'] != 0) { ?>
+                    <p class="mt-5 text-sm my-2 rounded-lg inline-block py-1 px-2 bg-green-500 text-white">Deze comment is als nuttig beoordeelt</p>
+                <?php } ?>
+
+                <?php if ($comment['dislikes'] != 0) { ?>
+                    <p class="mt-5 text-sm my-2 rounded-lg inline-block py-1 px-2 bg-red-500 text-white">Deze comment is als fout beoordeelt</p>
                 <?php } ?>
 
 
                 <?php if ($PData['role_id'] == 'docent') { ?>
-                    <?php if ($comment['likes'] == 0) { ?>
-                        <?php foreach ($postId as $postid) : ?>
-                            <?php foreach ($commentId as $commentid) : ?>
-                                <div class="mt-5">
-                                    <a class="text-sm text-green-500" href="like.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>&comment=<?php echo $commentid['id'] ?>">Deze comment als nuttig verklaren</a>
-                                </div>
+                    <?php if ($comment['likes'] == 0 && $comment['dislikes'] == 0) { ?>
+                        <?php if ($comment['role_id'] == 'student') { ?>
+                            <?php foreach ($postId as $postid) : ?>
+                                <?php foreach ($commentId as $commentid) : ?>
+                                    <div class="mt-5">
+                                        <a class="text-sm mt-2 bg-gray-100 rounded-lg inline-block py-1 px-2 hover:bg-green-500 hover:text-white" href="like.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>&comment=<?php echo $commentid['id'] ?>">Deze comment als nuttig beoordelen</a>
+                                    </div>
+                                <?php endforeach; ?>
                             <?php endforeach; ?>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     <?php } ?>
                 <?php } ?>
+
+                <?php if ($PData['role_id'] == 'docent') { ?>
+                    <?php if ($comment['dislikes'] == 0 && $comment['likes'] == 0) { ?>
+                        <?php if ($comment['role_id'] == 'student') { ?>
+                            <?php foreach ($postId as $postid) : ?>
+                                <?php foreach ($commentId as $commentid) : ?>
+                                    <div class="mt-5">
+                                        <a class="text-sm bg-gray-100 rounded-lg inline-block py-1 px-2 hover:bg-red-500 hover:text-white" href="dislike.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>&comment=<?php echo $commentid['id'] ?>">Deze comment als fout beoordelen</a>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        <?php } ?>
+                    <?php } ?>
+                <?php } ?>
+
                 <hr class="mt-5">
             </div>
         <?php endforeach; ?>
 
         <form class="form" action="" method="post">
-            <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Schrijf een opmerking" name="post" id="postcontent" cols="20" rows="5"></textarea>
+            <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Schrijf een opmerking" name="content" id="postcontent" cols="20" rows="5"></textarea>
             <input class="md:w-72 lg:w-80 outline-none w-64 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" value="Post" name="submitComment" id="submitPost">
         </form>
     </div>
+
 </body>
 <footer>
     <?php include_once('nav.inc.php'); ?>

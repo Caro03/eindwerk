@@ -138,7 +138,7 @@ class Team
     public function fetchStudentsByCourse($courseID)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * FROM students INNER JOIN users ON students.student_id = users.id WHERE course_id = :courseID");
+        $statement = $conn->prepare("SELECT *, (select count(*) from scores where (scores.user_id = students.student_id)) FROM students INNER JOIN users ON students.student_id = users.id WHERE students.course_id = :courseID order by (select count(*) from scores where (scores.user_id = students.student_id)) desc");
         $statement->bindParam(":courseID", $courseID);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);

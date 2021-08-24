@@ -303,6 +303,19 @@ class User
                 return $result;
         }
 
+        public function countNuttig($id)
+        {
+                $conn = Db::getConnection();
+                $statement = $conn->prepare("select count(*) from users inner join comments as comment on users.id = comment.user_id where comment.likes = 1 and users.id = :id");
+
+                $id = $this->getId();
+                $statement->bindParam(":id", $id);
+
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+                return $result;
+        }
+
         public function getUpdatePassword()
         {
                 return $this->updatePassword;

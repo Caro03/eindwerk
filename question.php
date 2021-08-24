@@ -46,7 +46,7 @@ if ($PData['role_id'] == 'student') {
         $submit = $submitAnswer->submitAnswer($question_id, $answer);
         header("Location: succes.php");
 
-        if ($submitAnswer->checkAnswer()) {
+        if ($submitAnswer->checkAnswer(['response']) == $submitAnswer->checkAnswer(['correct_answer'])) {
             $submitAnswer->saveScore();
         }
     }
@@ -60,6 +60,7 @@ if (!empty($_POST['submitQuestion'])) {
         $correctantwoord = $_POST['correctantwoord'];
         $foutantwoord1 = $_POST['foutantwoord1'];
         $foutantwoord2 = $_POST['foutantwoord2'];
+        $deadline = $_POST['deadline'];
         $course_id = $_GET['id'];
 
         $question->setCourse_id($course_id);
@@ -67,10 +68,11 @@ if (!empty($_POST['submitQuestion'])) {
         $question->setCorrectantwoord($correctantwoord);
         $question->setFoutantwoord1($foutantwoord1);
         $question->setFoutantwoord2($foutantwoord2);
+        $question->setDeadline($deadline);
 
         // methode
-        $question->saveQuestion($course_id, $vraag, $correctantwoord, $foutantwoord1, $foutantwoord2);
-        $error = "Jouw vraag is succesvol opgeslagen";
+        $question->saveQuestion($course_id, $vraag, $correctantwoord, $foutantwoord1, $foutantwoord2, $deadline);
+        $good = "Jouw vraag is succesvol opgeslagen";
     } catch (\Throwable $th) {
         $error = $th->getMessage();
     }
@@ -87,67 +89,94 @@ if (!empty($_POST['submitQuestion'])) {
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
+    <script src="ckeditor/ckeditor.js"></script>
     <title>PEERHOOD | Quiz</title>
 </head>
 
 <body>
+    <div class="block ml-auto mr-auto md:w-72 lg:w-80 w-64">
 
-    <?php if ($PData['role_id'] == 'docent') { ?>
-        <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
-            <h2 class="font-medium text-2xl my-10">Meerkeuzevraag maken</h2>
-            <form action="" method="POST">
-
-                <?php if (isset($error)) : ?>
-                    <div class="mb-5 text-red-500 font-medium">
-                        <p>
-                            <?php echo $error; ?>
-                        </p>
-                    </div>
-                <?php endif; ?>
-
-                <div>
-                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="vraag" id="vraag" placeholder="Wat is de vraag?">
-                </div>
-                <div>
-                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="correctantwoord" id="correctantwoord" placeholder="Correct antwoord">
-                </div>
-                <div>
-                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord1" id="foutantwoord1" placeholder="Fout antwoord 1">
-                </div>
-                <div>
-                    <input class="md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="text" name="foutantwoord2" id="foutantwoord2" placeholder="Fout antwoord 2">
-                </div>
-                <div>
-                    <input class="md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" name="submitQuestion" value="Post quiz">
-                </div>
-            </form>
-        </div>
-
-    <?php } ?>
-
-    <?php if ($PData['role_id'] == 'student') { ?>
-        <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
-            <?php if ($c == false) { ?>
-                <h2 class="font-medium text-2xl mt-10 mb-5 text-center"><?php echo $q['question'] ?></h2>
-
+        <?php if ($PData['role_id'] == 'docent') { ?>
+            <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
+                <h2 class="font-medium text-2xl my-10">Meerkeuzevraag maken</h2>
                 <form action="" method="POST">
-                    <div class="mb-10 space-y-2 text-center">
-                        <input type="radio" id="answer1" name="answer" value="<?php echo $randomA = $a[0];  ?>">
-                        <label for="answer1"><?php echo $randomA = $a[0]; ?></label><br>
-                        <input type="radio" id="answer2" name="answer" value="<?php echo $randomA = $a[1];  ?>">
-                        <label for="answer2"><?php echo $randomA = $a[1]; ?></label><br>
-                        <input type="radio" id="answer3" name="answer" value="<?php echo $randomA = $a[2];  ?>">
-                        <label for="answer3"><?php echo $randomA = $a[2]; ?></label><br>
+
+                    <?php if (isset($error)) : ?>
+                        <div class="mb-5 text-red-500 font-medium">
+                            <p>
+                                <?php echo $error; ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($good)) : ?>
+                        <div class="mb-5 text-green-500 font-medium">
+                            <p class="form_error">
+                                <?php echo $good; ?>
+                            </p>
+                        </div>
+                    <?php endif; ?>
+
+                    <div>
+                        <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Wat is jouw vraag?" name="vraag" id="postcontent" cols="20" rows="5"></textarea>
                     </div>
                     <div>
-                        <input class="outline-none w-56 md:w-72 lg:w-80 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" name="indienen" value="Indienen">
+                        <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Correct antwoord" name="correctantwoord" id="postcontent" cols="20" rows="2"></textarea>
+                    </div>
+                    <div>
+                        <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Fout antwoord 1" name="foutantwoord1" id="postcontent" cols="20" rows="2"></textarea>
+                    </div>
+                    <div>
+                        <textarea class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" placeholder="Fout antwoord 2" name="foutantwoord2" id="postcontent" cols="20" rows="2"></textarea>
+                    </div>
+                    <div>
+                        <p class="mb-4">Deadline voor deze vraag</p>
+                        <input class="w-64 md:w-72 lg:w-80 outline-none block px-5 py-5 rounded-xl border-black border-2 mb-4" type="date" id="deadline" name="deadline">
+                    </div>
+                    <div>
+                        <input class="ml-auto mr-auto md:w-72 lg:w-80 outline-none w-56 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" name="submitQuestion" value="Post quiz">
+                    </div>
                 </form>
-            <?php } ?>
-        </div>
-    <?php } ?>
+            </div>
 
+        <?php } ?>
+
+        <?php if ($PData['role_id'] == 'student') { ?>
+            <?php if (date('dmY') <= date('dmY', strtotime($q['deadline']))) { ?>
+                <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
+                    <?php if ($c == false) { ?>
+                        <div class="font-medium text-2xl mt-10 mb-5 text-center"><?php echo $q['question']; ?></div>
+
+                        <form action="" method="POST">
+                            <div class="ml-auto mr-auto mb-8 space-y-2 text-center">
+                                <input type="radio" id="answer1" name="answer" value="<?php echo $randomA = $a[0];  ?>">
+                                <label for="answer1"><?php echo $randomA = $a[0]; ?></label><br>
+                                <input type="radio" id="answer2" name="answer" value="<?php echo $randomA = $a[1];  ?>">
+                                <label for="answer2"><?php echo $randomA = $a[1]; ?></label><br>
+                                <input type="radio" id="answer3" name="answer" value="<?php echo $randomA = $a[2];  ?>">
+                                <label for="answer3"><?php echo $randomA = $a[2]; ?></label><br>
+                            </div>
+                            <p class="mb-5 text-center text-sm">De deadline voor deze vraag is:
+                                <span class="font-medium">
+                                    <?php if (date('dmY') < date('dmY', strtotime($q['deadline']))) { ?><?php echo date('d M Y', strtotime($q['deadline'])); ?><?php } ?>
+                                    <?php if (date('dmY') == date('dmY', strtotime($q['deadline']))) { ?>Vandaag<?php } ?>
+                                </span>
+
+                            </p>
+                            <input class="ml-auto mr-auto outline-none w-56 md:w-72 lg:w-80 block px-5 py-5 rounded-xl text-white bg-yellow-400 mb-4 hover:bg-yellow-500" type="submit" name="indienen" value="Indienen">
+                        </form>
+                    <?php } ?>
+
+                    <?php if ($c != false) { ?>
+                        <h2>Geen vraag beschikbaar</h2>
+                        <p>Jouw docent heeft nog geen nieuwe vraag geupload</p>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        <?php } ?>
+    </div>
 </body>
-<footer>
+<footer class="">
     <?php include_once('nav.inc.php'); ?>
 </footer>
 

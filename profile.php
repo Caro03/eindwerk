@@ -16,7 +16,7 @@ if (!empty($_POST['password']) && !empty($_POST['newPassword'])) {
             //current password matches -> update password
             $user->setUpdatePassword($_POST['newPassword']);
             $user->changePassword();
-            $error = "Nieuw wachtwoord is opgeslagen";
+            $good = "Nieuw wachtwoord is opgeslagen";
         } else {
             $error = "wachtwoord komt niet overeen";
         }
@@ -28,7 +28,7 @@ if (!empty($_POST['password']) && !empty($_POST['newPassword'])) {
 if (!empty($_POST['roleChoice'])) {
     $user->setRoleChoice($_POST['role']);
     $user->changeRole();
-    $error = "Jouw voorkeur voor het forum is opgeslagen";
+    $good = "Jouw voorkeur voor het forum is opgeslagen";
 }
 
 
@@ -59,6 +59,14 @@ if (!empty($_POST['roleChoice'])) {
             <div class="mb-5 text-red-500 font-medium">
                 <p class="form_error">
                     <?php echo $error; ?>
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($good)) : ?>
+            <div class="mb-5 text-green-500 font-medium">
+                <p class="form_error">
+                    <?php echo $good; ?>
                 </p>
             </div>
         <?php endif; ?>

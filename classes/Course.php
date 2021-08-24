@@ -186,6 +186,16 @@ class Course
         return $result;
     }
 
+    public function allCourses()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM courses");
+
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     /**
      * Get the value of category
      */
