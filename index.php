@@ -31,8 +31,9 @@ $userCourses = $getUserCourses->fetchCourseForUser();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
+    <link rel="icon" href="images/p.png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <title>PEERHOOD | Home</title>
+    <title>peerhood</title>
 </head>
 
 <body>
@@ -45,7 +46,7 @@ $userCourses = $getUserCourses->fetchCourseForUser();
         </div>
 
         <?php foreach ($courseData as $data) : ?>
-            <div class="max-w-sm mx-auto my-4">
+            <div class="max-w-xs mx-auto my-4">
                 <a class="block text-center w-full px-10 py-5 rounded-xl <?php if ($data['category'] == 'taal') { ?>bg-blue-500 text-white hover:bg-blue-600<?php } ?> <?php if ($data['category'] == 'programmeren') { ?>bg-green-500 text-white hover:bg-green-600<?php } ?> <?php if ($data['category'] == 'design') { ?>bg-pink-500 text-white hover:bg-pink-600<?php } ?> <?php if ($data['category'] == 'marketing') { ?>bg-yellow-500 text-white hover:yellow-600<?php } ?>" href="course.php?id=<?php echo $data['id'] ?>">
                     <?php echo $data['coursename']; ?>
                 </a>
@@ -53,7 +54,7 @@ $userCourses = $getUserCourses->fetchCourseForUser();
         <?php endforeach; ?>
 
         <?php foreach ($userCourses as $userCourse) : ?>
-            <div class="max-w-sm mx-auto my-4">
+            <div class="max-w-xs mx-auto my-4">
                 <a class="block text-center w-full px-10 py-5 rounded-xl  <?php if ($userCourse['category'] == 'taal') { ?>bg-blue-500 text-white hover:bg-blue-600<?php } ?> <?php if ($userCourse['category'] == 'programmeren') { ?>bg-green-500 text-white hover:bg-green-600<?php } ?> <?php if ($userCourse['category'] == 'design') { ?>bg-pink-500 text-white hover:bg-pink-600<?php } ?> <?php if ($userCourse['category'] == 'marketing') { ?>bg-yellow-500 text-white hover:yellow-600<?php } ?>" href="course.php?teamid=<?php echo $userCourse['course_id'] ?>&team=<?php echo $userCourse['team_id'] ?>">
                     <?php echo $userCourse['coursename']; ?>
                 </a>

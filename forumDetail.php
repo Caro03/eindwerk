@@ -55,8 +55,9 @@ if (!empty($_POST['like'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
+    <link rel="icon" href="images/p.png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <title>PEERHOOD</title>
+    <title>peerhood</title>
 </head>
 
 <body>
@@ -91,7 +92,7 @@ if (!empty($_POST['like'])) {
                             <?php foreach ($postId as $postid) : ?>
                                 <?php foreach ($commentId as $commentid) : ?>
                                     <div class="mt-5">
-                                        <a class="text-sm mt-2 bg-gray-100 rounded-lg inline-block py-1 px-2 hover:bg-green-500 hover:text-white" href="like.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>&comment=<?php echo $commentid['id'] ?>">Deze comment als nuttig beoordelen</a>
+                                        <a class="text-sm mt-2 bg-gray-100 rounded-lg inline-block py-1 px-2 hover:bg-green-500 hover:text-white" href="like.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>">Deze comment als nuttig beoordelen</a>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>
@@ -105,7 +106,7 @@ if (!empty($_POST['like'])) {
                             <?php foreach ($postId as $postid) : ?>
                                 <?php foreach ($commentId as $commentid) : ?>
                                     <div class="mt-5">
-                                        <a class="text-sm bg-gray-100 rounded-lg inline-block py-1 px-2 hover:bg-red-500 hover:text-white" href="dislike.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>&comment=<?php echo $commentid['id'] ?>">Deze comment als fout beoordelen</a>
+                                        <a class="text-sm bg-gray-100 rounded-lg inline-block py-1 px-2 hover:bg-red-500 hover:text-white" href="dislike.php?id=<?php echo $postid['post_id'] ?>&user=<?php echo $comment['user_id'] ?>">Deze comment als fout beoordelen</a>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endforeach; ?>

@@ -58,14 +58,15 @@ if (!empty($_POST['submitComment'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
+    <link rel="icon" href="images/p.png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <title>PEERHOOD</title>
+    <title>peerhood</title>
 </head>
 
 <body>
     <div class="block ml-auto mr-auto w-64 md:w-72 lg:w-80">
 
-        <h1 class="font-medium text-2xl my-10">Je hebt deze comment beoordeelt als onnuttig</h1>
+        <h1 class="font-medium text-2xl my-10">Je hebt deze comment beoordeelt als fout</h1>
 
         <a class="hover:underline hover:text-yellow-500" href="forum.php">Ga terug naar forum</a>
     </div>

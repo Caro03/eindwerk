@@ -131,8 +131,20 @@ class Forum
     {
         $conn = Db::getConnection();
         $statement = $conn->prepare("update comments set likes = 1 where post_id = {$_GET["id"]} and user_id = {$_GET["user"]}");
-        $postContent = $this->getPostContent();
-        $statement->bindParam(":content", $postContent);
+        //$postContent = $this->getPostContent();
+        //$statement->bindParam(":content", $postContent);
+
+        $result = $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function saveTest()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("insert into test (post_id, user_id, content) values ({$_GET["id"]}, {$_GET["user"]}, {$_GET["content"]})");
+        //$postContent = $this->getPostContent();
+        //$statement->bindParam(":content", $postContent);
 
         $result = $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -144,7 +156,7 @@ class Forum
         $conn = Db::getConnection();
         $statement = $conn->prepare("update comments set dislikes = 1 where post_id = {$_GET["id"]} and user_id = {$_GET["user"]}");
         $postContent = $this->getPostContent();
-        $statement->bindParam(":content", $postContent);
+        //$statement->bindParam(":content", $postContent);
 
         $result = $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);

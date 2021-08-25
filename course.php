@@ -54,8 +54,9 @@ if (isset($_GET['teamid'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
+    <link rel="icon" href="images/p.png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <title>PEERHOOD | Home</title>
+    <title>peerhood</title>
 </head>
 
 <body>

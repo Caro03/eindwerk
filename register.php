@@ -54,8 +54,9 @@ if (!empty($_POST)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
+    <link rel="icon" href="images/p.png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <title>Register</title>
+    <title>peerhood</title>
 </head>
 
 <body>
@@ -104,7 +105,7 @@ if (!empty($_POST)) {
 
         </form>
         <div class="text-center mb-10">
-            <a class="text-sm" href="login.php">Al een account? Log je hier in</a>
+            <a class="text-sm hover:underline hover:text-yellow-500" href="login.php">Al een account? Log je hier in</a>
         </div>
     </div>
 </body>

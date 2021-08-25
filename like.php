@@ -27,24 +27,10 @@ if (isset($_GET['id'])) {
     $allComments = $posts->getComments();
 }
 
-if (isset($_GET['user'])) {
+if (isset($_GET['user']) && isset($_GET['content'])) {
     $posts = new Forum();
     $saveLike = $posts->saveLike();
     $printLikes = $posts->printLikes();
-}
-
-if (!empty($_POST['submitComment'])) {
-    if (!empty($_POST['post'])) {
-        $postContent = $_POST['post'];
-        $postForum = new Forum();
-        $idArray = $postForum->idFromPost();
-        //$postID = $idArray['id'];
-        //$postForum->setPostID($postID);
-        $postForum->setPostContent($postContent);
-        $post = $postForum->postComment($postContent);
-        $allComments = $posts->getComments();
-        //$allPosts = $posts->getForumPosts();
-    }
 }
 
 ?>
@@ -58,8 +44,9 @@ if (!empty($_POST['submitComment'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
     <link rel="stylesheet" href="public/styles.css">
+    <link rel="icon" href="images/p.png">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <title>PEERHOOD</title>
+    <title>peerhood</title>
 </head>
 
 <body>
